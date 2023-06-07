@@ -11,5 +11,3 @@ This code is based on an earlier version by F. Bianchi, available at: https://gi
 The file also contains code for turning the output of the quadratic Chabauty computation into an input for a Mordell--Weil sieve (as described in [BP22, S.4.2]).
 
 NB: For the prime 3, the code relies on the following repository: https://github.com/jbalakrishnan/AWS
-
-The folder LMFDB contains some files for the computations of the rational points on the curves considered in [BP22].
