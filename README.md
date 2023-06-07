@@ -1,5 +1,4 @@
 # QC_bielliptic
-SageMath code for Quadratic Chabauty for rank 2, genus 2 bielliptic curves over Q.
 
 This is a fork of Francesca Bianchi's code from [BP22]: "Rational points on rank 2 genus 2 bielliptic curves in the LMFDB" by F. Bianchi and O. Padurariu. 
 
