@@ -72,6 +72,96 @@ AUTHORS:
 
 import itertools
 
+def embeddings(K,p,prec):
+    r"""
+    The embedding(s) $K=\Q(\sqrt(D)) \into \Q_p$.
+    
+    Added to the forked repo, JB2023.
+    """
+    Q = Qp(p,prec)
+    OK = K.maximal_order()
+    pOK = factor(p*OK)
+    if (len(pOK) == 2 and pOK[0][1] == 1):
+        R = Q['x']
+        r1, r2 = R(K.defining_polynomial()).roots()
+        psi1 = K.hom([r1[0]])
+        psi2 = K.hom([r2[0]])
+        return [psi1, psi2]
+    else:
+        F = Q.extension(K.defining_polynomial(),names='a')
+        a = F.gen()
+        psi = self._psis = [K.hom([a])]
+        return psi
+
+
+def cyc_padic_height_quad(E,K,P,p):
+    r"""
+    The cyclotomic p-adic height of P on the elliptic curve E, where P is defined over K.
+    
+    Added to the forked repo, JB2023.
+    """
+    psi1,psi2 = embeddings(K,p,20)
+    m0 = prod(E.tamagawa_numbers())
+    K = E.base_field()
+    Kdeg = K.degree()
+    A = m0*P
+    if A == E(0,1,0):
+        return 0
+    if A[0] in QQ:
+        A0 = QQ(A[0])
+        deg = 1
+    else:
+        A0 = A[0]
+        deg = 2
+    if deg == 2:
+        MP = A0.minpoly()
+        if MP[0] in ZZ and MP[1] in ZZ and MP[2] in ZZ:
+            minpol = MP
+        else:
+            minpol = (MP[0].denominator())*MP
+            gminpoly = gcd([x for x in minpol.list()])
+            if gminpoly == 1:
+                minpol = ZZ['x'](minpol)
+            else:
+                minpol = ZZ['x'](minpol/gminpoly)
+    else:
+        minpol = algdep(A0,deg)
+    bP = (minpol[deg]).prime_to_m_part(p)
+    calD = bP^(Kdeg/(2*deg))
+    F = Qp(p,20)
+    EF = E.change_ring(QQ).change_ring(F)
+    Ep = E.change_ring(QQ).change_ring(GF(p))
+    sig = E.change_ring(QQ).padic_sigma(p)
+    sigmavals = []
+    divpolyvals = []
+    if len(factor(p*K)) == 2:
+        A1 = EF(psi1(A[0]), psi1(A[1]))
+        A2 = EF(psi2(A[0]), psi2(A[1]))
+        if A1[0].valuation() < 0:
+            m1 = 1
+        else:
+            m1 = Ep(A1).additive_order()
+        if A2[0].valuation() < 0:
+            m2 = 1
+        else:
+            m2 = Ep(A2).additive_order()
+        m = max(m1,m2)
+        for Q in [A1,A2]:
+            P = Q
+            Q = m*Q
+            val_for_sig = -Q[0]/Q[1]
+            sval = sig(val_for_sig)
+            if m%2 == 0:
+                fn = E.change_ring(QQ).division_polynomial(m,two_torsion_multiplicity=1)
+                fnval = fn(P[0],P[1])
+            else:
+                fn = E.change_ring(QQ).division_polynomial(m)
+                fnval = fn(P[0])
+            sigmavals = sigmavals + [sval.norm()]
+            divpolyvals = divpolyvals + [fnval.norm()]
+    ord = m*m0
+    return ZZ(1)/ZZ(p*ord**2)*(log(prod(sigmavals)/prod(divpolyvals),0)-m**2*log(F(calD)))
+
 def has_potential_good_reduction(H, p):
     r"""
     Return `True` if `H` has potential good reduction at `p` and `False` otherwise.
