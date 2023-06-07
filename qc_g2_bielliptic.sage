@@ -6,10 +6,10 @@ The main function is `quadratic_chabauty_bielliptic(f, p, n)`.
 !!NB!!: If the function returns a SageMath error, it could be because the `p`-adic precision `n` is too small.
         Try increasing it. 
 
-Start date: 2nd March 2021.
 
-Modified version of:
+Modified version of the following files:
 https://github.com/bianchifrancesca/quadratic_chabauty/blob/master/quadratic_chabauty_bielliptic.sage
+https://github.com/bianchifrancesca/QC_bielliptic/blob/main/qc_g2_bielliptic.sage
 
 Some differences to previous version:
 
@@ -63,6 +63,10 @@ REFERENCES:
   bielliptic curves in the LMFDB", 2022.
 - [Kay22] \E. Kaya, "Explicit Vologodsky integration for hyperelliptic curves",
   Math. Comp., 2022.
+  
+AUTHORS:
+- Francesca Bianchi (main code repository)
+- Jennifer Balakrishnan (small edits, indicated by JB2023)
 """
 ############## AUXILIARY FUNCTIONS ##############
 
