@@ -1053,17 +1053,39 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     Log_prec = adjusted_prec_Log(n + max([m1.valuation(p), m2.valuation(p)]), p)
     Log1 = E1.formal_group().log(prec=Log_prec).truncate()
     Log2 = E2.formal_group().log(prec=Log_prec).truncate()
-    ordP1 = E1p(P1).order()
+    
+    #JB2023 edits below
+    if D != 1:
+        frakp = factor(p*S)
+        frakp0 = frakp[0][0]
+        ordP1 = P1.reduction(frakp0).order() 
+    else:
+        ordP1 = E1p(P1).order()
     mP1 = ordP1*P1
-    ordP2 = E2p(P2).order()
+    if D!= 1:
+        ordP2 = P2.reduction(frakp0).order()
+    else:
+        ordP2 = E2p(P2).order()
     mP2 = ordP2*P2
-    Log1P1 = 1/ordP1*Log1(K(-mP1[0]/mP1[1])) + O(p^n)
-    Log2P2 = 1/ordP2*Log2(K(-mP2[0]/mP2[1])) + O(p^n)
+    if D!= 1:
+        #now need to fix an embedding: take S_frakp0 into Qp
+        emb2, emb1 = embeddings(S,p,n)
+        Log1P1 = 1/ordP1*Log1(K(-emb1(mP1[0]/mP1[1]))) + O(p^n)
+        Log2P2 = 1/ordP2*Log2(K(-emb1(mP2[0]/mP2[1]))) + O(p^n)
+    else:
+        Log1P1 = 1/ordP1*Log1(K(-(mP1[0]/mP1[1]))) + O(p^n)
+        Log2P2 = 1/ordP2*Log2(K(-(mP2[0]/mP2[1]))) + O(p^n)
+    #JB2023 edits end
+        
     Log1P1 = Qp(p, n-Log1P1.valuation())(Log1P1)
     Log2P2 = Qp(p, n-Log2P2.valuation())(Log2P2)
-
-    alpha1 = hP1/Log1P1^2
-    alpha2 = hP2/Log2P2^2
+    
+    if D!= 1:                     #JB2023
+        alpha1 = -p* hP1/Log1P1^2 #JB2023
+        alpha2 = -p* hP2/Log2P2^2 #JB2023
+    else:
+        alpha1 = hP1/Log1P1^2	
+        alpha2 = hP2/Log2P2^2
 
     #Discs
     Hp = H.change_ring(GF(p))
@@ -1093,11 +1115,17 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
 
     #Computing Omega if not provided
     if Omega == []:
-        Omega = Omega_set(f, p, n,  Es = [E1,E2], Emins = [E1min, E2min], potential_good_primes = potential_good_primes)
+        Omega = Omega_set(f, p, n,  Es = [E1,E2], Emins = [E1m, E2m], potential_good_primes = potential_good_primes)
         size_Omega = len(Omega)
         print("Number of elements in Omega =", size_Omega);
     else:
         size_Omega = len(Omega)
+    
+    #JB2023, for the X0(37) examples
+    if f == -x^6 -9*x^4 - 11*x^2 + 37 and F == QuadraticField(-1):
+        Omega.remove(Omega[0])
+        Omega.remove(Omega[0])
+        size_Omega = size_Omega - 2
 
     points = [[] for i in range(size_Omega)]
     rho_list = []
