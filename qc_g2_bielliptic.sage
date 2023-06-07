@@ -886,7 +886,7 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
 
 ############## MAIN FUNCTION ###############
 
-def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = True, up_to_auto = False, omega_info = False):
+def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = True, up_to_auto = False, omega_info = False, F = QQ):
     r"""
     Do quadratic Chabauty on a genus `2` bielliptic curve of rank `2`.
     INPUT:
