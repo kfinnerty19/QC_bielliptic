@@ -892,7 +892,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     INPUT:
     - ``f`` -- a polynomial over `\QQ` of the form `a_6*x^6 + a_4*x^4 + a_2*x^2 + a_0`,
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
-      and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`.
+      and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when 
+      f defines `X_0(37)`, and `F` is `\QQ(i)`, the two elliptic curves should have rank `1` over `\QQ(i)` [JB2023]
     - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
     - ``Omega`` -- list of the values in `Omega` from [BP22],
@@ -907,6 +908,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       items are returned up to the automorphisms `(x,y) \mapsto (\pm x,\pm y)`
     - ``omega_info`` -- True/False (default False): if True, the output is partitioned
       according to elements in `Omega`.
+    - ``F`` -- default is `\QQ` but in the case when the curve is `X_0(37)`, it can be `\QQ(i)` [JB2023]  
+      
     OUTPUT: If `omega_info` is False: A tuple consisting of:
     - A sorted list of rational points on `H`.
     - A sorted list of `p`-adic points on `H` which have not been recognised as rational points.
@@ -985,28 +988,43 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     #sage: phi = E.isomorphism_to(Eshort)
     #sage: Eshort.padic_height(5)(2*phi(P)) - 4*Eshort.padic_height(5)(phi(P)) #should be 0
     #5 + 4*5^2 + 4*5^3 + 2*5^5 + 5^7 + 5^8 + 2*5^9 + 5^10 + 4*5^11 + 3*5^12 + 5^13 + 5^16 + 5^18 + O(5^20)
-    E1min = E1.minimal_model()
-    E2min = E2.minimal_model()
-    delta1 = E1.discriminant()/E1min.discriminant()
-    delta2 = E2.discriminant()/E2min.discriminant()
-    psi1 = E1min.isomorphism_to(E1)
-    psi2 = E2min.isomorphism_to(E2)
-    P1min = E1min.gens()[0]
-    P2min = E2min.gens()[0]
+
+    #JB2023 edits below	
+    E1m = E1.minimal_model()
+    E2m = E2.minimal_model()
+    delta1 = E1.discriminant()/E1m.discriminant()
+    delta2 = E2.discriminant()/E2m.discriminant()
+    S = F
+    E1mS = E1m.change_ring(S)
+    E2mS = E2m.change_ring(S)
     try:
-        h1 = E1min.padic_height(p, n)
+        h1 = E1m.padic_height(p, n)
     except NotImplementedError:
         print("For the prime 3 the code does not work, unless you use this repository: https://github.com/jbalakrishnan/AWS")
         return "Error", "Error"
     try:
-        h2 = E2min.padic_height(p, n)
+        h2 = E2m.padic_height(p, n)
     except NotImplementedError:
         print("For the prime 3 the code does not work, unless you use this repository: https://github.com/jbalakrishnan/AWS")
         return "Error", "Error"
-    hP1 = h1(P1min)
-    hP2 = h2(P2min)
-    P1 = psi1(P1min)
-    P2 = psi2(P2min)
+    P1m = E1mS.gens()[0]
+    P2m = E2mS.gens()[0]
+    E1S = E1.change_ring(S)
+    E2S = E2.change_ring(S)
+    psi1 = E1mS.isomorphism_to(E1S)
+    psi2 = E2mS.isomorphism_to(E2S)
+    D = S.discriminant()
+    #check D != 1
+    if D != 1:
+        hP1 = cyc_padic_height_quad(E1mS, S, P1m, p)
+        hP2 = cyc_padic_height_quad(E2mS, S, P2m, p)
+    else:
+        hP1 = E1mS.padic_height(p)(P1m)
+        hP2 = E2mS.padic_height(p)(P2m)
+    P1 = psi1(P1m)
+    P2 = psi2(P2m)
+    #JB2023 edits end
+
     HK = H.change_ring(K)
     E1K = E1.change_ring(K)
     E2K = E2.change_ring(K)
