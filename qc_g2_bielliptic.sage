@@ -74,7 +74,7 @@ import itertools
 
 def embeddings(K,p,prec):
     r"""
-    The embedding(s) $K=\Q(\sqrt(D)) \into \Q_p$.
+    The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
     
     Added to the forked repo, JB2023.
     """
@@ -96,8 +96,8 @@ def embeddings(K,p,prec):
 
 def cyc_padic_height_quad(E,K,P,p):
     r"""
-    The cyclotomic p-adic height of P on the elliptic curve E, where P is defined 
-    over the quadratic field K.
+    The cyclotomic `p`-adic height of `P` on the elliptic curve `E`, where `P` is defined 
+    over the quadratic field `K`.
     
     Added to the forked repo, JB2023.
     """
