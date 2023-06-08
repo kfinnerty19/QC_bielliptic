@@ -1,6 +1,6 @@
 # QC_bielliptic
 
-This repository has a very mildly edited version of Francesca Bianchi's SageMath code, originally written for genus 2 bielliptic curves over Q whose Jacobians have Mordell--Weil rank 2. Bianchi's code is discussed in the paper 
+This repository has a mildly edited version of Francesca Bianchi's SageMath code, originally written for genus 2 bielliptic curves over Q whose Jacobians have Mordell--Weil rank 2. Bianchi's code is discussed in the paper 
 
 [BP22]: "Rational points on rank 2 genus 2 bielliptic curves in the LMFDB" by F. Bianchi and O. Padurariu. 
 
