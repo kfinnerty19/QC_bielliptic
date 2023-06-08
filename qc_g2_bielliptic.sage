@@ -96,7 +96,8 @@ def embeddings(K,p,prec):
 
 def cyc_padic_height_quad(E,K,P,p):
     r"""
-    The cyclotomic p-adic height of P on the elliptic curve E, where P is defined over K.
+    The cyclotomic p-adic height of P on the elliptic curve E, where P is defined 
+    over the quadratic field K.
     
     Added to the forked repo, JB2023.
     """
