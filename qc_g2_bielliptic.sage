@@ -47,6 +47,17 @@ EXAMPLES::
     16
     In this case, `other_points` is not an empty list, so need more work to determine the rational points.
 
+    This is an example over a quadratic imaginary field. Note that rat_points is still strictly the `\QQ`-rational points on the curve.
+    sage: R.<x> = PolynomialRing(Rationals())
+    sage: f = -x^6 -9*x^4 - 11*x^2 + 37
+    sage: K.<a> = QuadraticField(-1)
+    sage: rat_points, other_points = quadratic_chabauty_bielliptic(f,13,20, F = K)
+    sage: rat_points
+    [(-1 : -4 : 1), (-1 : 4 : 1), (0 : 1 : 0), (1 : -4 : 1), (1 : 4 : 1)]
+    sage: len(other_points)
+    28
+    In this case, the recovered `\QQ(i)`-rational points are in the set other_points.
+
 See the function description for more information and examples.
 
 REFERENCES:
