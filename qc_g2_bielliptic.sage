@@ -10,6 +10,7 @@ The main function is `quadratic_chabauty_bielliptic(f, p, n)`.
 Modified version of the following files:
 https://github.com/bianchifrancesca/quadratic_chabauty/blob/master/quadratic_chabauty_bielliptic.sage
 https://github.com/bianchifrancesca/QC_bielliptic/blob/main/qc_g2_bielliptic.sage
+https://github.com/jbalakrishnan/QC_bielliptic/blob/main/qc_g2_bielliptic.sage
 
 Some differences to previous version:
 
@@ -23,6 +24,7 @@ Some differences to previous version:
   using the formal group, and division polynomials. See for example `int_w1_b`for integrals of the second kind on elliptic curves.
   This may be of independent interest as it works in bad reduction too. We check it in bad reduction against an example in [Kay22].
 
+- Kate to do: add documentation
 
 EXAMPLES::
     sage: R.<x> = PolynomialRing(Rationals())
@@ -78,6 +80,7 @@ REFERENCES:
 AUTHORS:
 - Francesca Bianchi (main code repository)
 - Jennifer Balakrishnan (small edits, indicated by JB2023)
+- Kate Finnerty (small edits, indicated by KF2024)
 """
 ############## AUXILIARY FUNCTIONS ##############
 
@@ -204,7 +207,7 @@ def has_potential_good_reduction(H, p):
             return False
     except KeyError:
         return True
-
+#Kate checked up to here
 
 def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None):
     r"""
