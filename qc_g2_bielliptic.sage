@@ -407,6 +407,7 @@ def local_coordinates_at_infinity_g2_even(H, prec = 20, name = 't'):
     Return local coordinates at one of the points at infinity on
      `H`, given by `y^2 = f(x)` where `deg f` is even.
     """
+    print("Called local coordinates at infinity g2 even")
     pols = H.hyperelliptic_polynomials()
     assert pols[1] == 0,  "Need H in the form y^2 = f(x)"
     pol = pols[0]
@@ -493,7 +494,6 @@ def local_heights_at_bad_primes_new(E, Enonmin, K):
             bad_primes_new_new.append(q)
     return bad_primes_new_new, W
 
-#Kate checked up to here
 def adjusted_prec_Log(n, p):
     r"""
     Compute sufficient `t`-adic precision so
