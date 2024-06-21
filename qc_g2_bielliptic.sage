@@ -207,7 +207,7 @@ def has_potential_good_reduction(H, p):
             return False
     except KeyError:
         return True
-#Kate checked up to here
+
 
 def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None):
     r"""
@@ -493,7 +493,7 @@ def local_heights_at_bad_primes_new(E, Enonmin, K):
             bad_primes_new_new.append(q)
     return bad_primes_new_new, W
 
-
+#Kate checked up to here
 def adjusted_prec_Log(n, p):
     r"""
     Compute sufficient `t`-adic precision so
