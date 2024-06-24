@@ -908,7 +908,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     - ``f`` -- a polynomial over `\QQ` of the form `a_6*x^6 + a_4*x^4 + a_2*x^2 + a_0`,
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when 
-      f defines `X_0(37)`, and `F` is `\QQ(i)`, the two elliptic curves should have rank `1` over `\QQ(i)` [JB2023]
+      `F` is an imaginary quadratic field the two elliptic curves should have rank `1` over `F` [KF2024]
     - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
     - ``Omega`` -- list of the values in `Omega` from [BP22],
@@ -923,7 +923,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       items are returned up to the automorphisms `(x,y) \mapsto (\pm x,\pm y)`
     - ``omega_info`` -- True/False (default False): if True, the output is partitioned
       according to elements in `Omega`.
-    - ``F`` -- default is `\QQ` but in the case when the curve is `X_0(37)`, it can be `\QQ(i)` [JB2023]  
+    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2024]  
       
     OUTPUT: If `omega_info` is False: A tuple consisting of:
     - A sorted list of rational points on `H`.
@@ -1136,7 +1136,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     else:
         size_Omega = len(Omega)
     
-    #JB2023, for the X0(37) examples
+    #JB2023, for the X0(37) examples #Kate to examine
     if f == -x^6 -9*x^4 - 11*x^2 + 37 and F == QuadraticField(-1):
         Omega.remove(Omega[0])
         Omega.remove(Omega[0])
