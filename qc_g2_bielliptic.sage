@@ -86,28 +86,26 @@ AUTHORS:
 
 import itertools
 
-class embeddings:
+def embeddings(K,p,prec):
     r"""
-        The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
+    The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
     
-        Added to the forked repo, JB2023.
-        Edited to class, KF2024.
+    Added to the forked repo, JB2023.
     """
-    def __init__(self,K,p,prec):
-                Q = Qp(p,prec)
-                OK = K.maximal_order()
-                pOK = factor(p*OK)
-                if (len(pOK) == 2 and pOK[0][1] == 1):
-                        R = Q['x']
-                        r1, r2 = R(K.defining_polynomial()).roots()
-                        psi1 = K.hom([r1[0]])
-                        psi2 = K.hom([r2[0]])
-                        self.result= [psi1, psi2]
-                else:
-                        F = Q.extension(K.defining_polynomial(),names='a')
-                        a = F.gen()
-                        psi = self._psis = [K.hom([a])]
-                        self.result= psi
+    Q = Qp(p,prec)
+    OK = K.maximal_order()
+    pOK = factor(p*OK)
+    if (len(pOK) == 2 and pOK[0][1] == 1):
+        R = Q['x']
+        r1, r2 = R(K.defining_polynomial()).roots()
+        psi1 = K.hom([r1[0]])
+        psi2 = K.hom([r2[0]])
+        return [psi1, psi2]
+    else:
+        F = Q.extension(K.defining_polynomial(),names='a')
+        a = F.gen()
+        psi = self._psis = [K.hom([a])]
+        return psi
 
 
 def cyc_padic_height_quad(E,K,P,p):
