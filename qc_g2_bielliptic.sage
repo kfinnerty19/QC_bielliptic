@@ -228,6 +228,8 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A p-adic number: the `v`-adic component of the `p`-adic height of `P`
     if `v` is a place; the sum of the components away from `p` of the
     `p`-adic height of `P` if `v` is `None`.
+
+    [KF]: added some comments
     """
     #Note the following is not checked in the original
     #sage code, but I think it is assumed in some places.
@@ -288,14 +290,14 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A = (3*x**2 + 2*a2*x + a4 - a1*y).valuation(v)
     B = (2*y+a1*x+a3).valuation(v)
     C = (3*x**4 + b2*x**3 + 3*b4*x**2 + 3*b6*x + b8).valuation(v)
-    if A <= 0 or B <= 0:
+    if A <= 0 or B <= 0: #good reduction [KF]
         r = max(0, -x.valuation(v))
-    elif c4.valuation(v) == 0:
+    elif c4.valuation(v) == 0: #multiplicative reduction [KF]
         n = min(B, N/2)
         r = -n*(N-n)/N
-    elif C >= 3*B:
+    elif C >= 3*B: #additive reduction of type IV or IV* [KF]
         r = -2*B/3
-    else:
+    else: #additive reduction of type III, III*, or I*M [KF]
         r = -C/4
     r -= offset/6
     if not r:
