@@ -818,6 +818,8 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
       is not provided, it uses the fact that there is only one contribution
       at the primes of potential good reduction for `y^2 = f(x)`.
     OUTPUT: A list of `p`-adic numbers.
+
+    Changed precision of Hq from 10 to n, KF2024.
     """
     a0 = f[0]
     a6 = f[6]
@@ -848,7 +850,7 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
                 print("using potential good reduction at", q)
                 phi1 = E1.isomorphism_to(E1min)
                 phi2 = E2.isomorphism_to(E2min)
-                Hq = H.change_ring(Qp(q,10))
+                Hq = H.change_ring(Qp(q,n))
                 for xq in [1,..,q, q^(-1),q^(-2),q^(-3),q^(-4)]:
                     try:
                         Pq = Hq.lift_x(xq)
