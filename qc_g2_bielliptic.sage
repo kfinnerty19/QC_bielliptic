@@ -811,7 +811,7 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
     - ``p`` -- an odd prime such that `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` have good reduction at `p`.
     - ``n`` -- working `p`-adic precision.
-    - ``L`` -- an imaginary quadratic number field #KF2024
+    - ``L`` -- an imaginary quadratic number field or QQ #KF2024
     - ``Es`` -- `[E_1, E_2]` or `None`. If `None`, `E_1` and `E_2` are computed.
     - ``Emins`` -- `[E_1,min, E_2,min]` where `E_i,min` is a global minimal model for `E_i`,
       or `None`. If `None`, `E_1,min` and `E_2,min` are computed.
@@ -820,7 +820,7 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
       at the primes of potential good reduction for `y^2 = f(x)`.
     OUTPUT: A list of `p`-adic numbers.
 
-    KF 2024 edits: Changed precision of Hq from 10 to n, added L input and bad_primes_4
+    KF 2024 edits: Changed precision of Hq from 10 to n, added L input and bad_primes_4.
     """
     a0 = f[0]
     a6 = f[6]
@@ -1137,7 +1137,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
 
     #Computing Omega if not provided
     if Omega == []:
-        Omega = Omega_set(f, p, n,  Es = [E1,E2], Emins = [E1m, E2m], potential_good_primes = potential_good_primes)
+        Omega = Omega_set(f, p, n, S,  Es = [E1,E2], Emins = [E1m, E2m], potential_good_primes = potential_good_primes) #KF2024
         size_Omega = len(Omega)
         print("Number of elements in Omega =", size_Omega);
     else:
