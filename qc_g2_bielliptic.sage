@@ -802,7 +802,7 @@ def coefficients_mod_pN_v2(f, points, im_divisors, base_pt, p, N, k=5):
     return coeffs
 
 
-def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
+def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True):
     r"""
     Compute a finite set containing Omega
     INPUT:
@@ -811,6 +811,7 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
     - ``p`` -- an odd prime such that `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` have good reduction at `p`.
     - ``n`` -- working `p`-adic precision.
+    - ``L`` -- an imaginary quadratic number field #KF2024
     - ``Es`` -- `[E_1, E_2]` or `None`. If `None`, `E_1` and `E_2` are computed.
     - ``Emins`` -- `[E_1,min, E_2,min]` where `E_i,min` is a global minimal model for `E_i`,
       or `None`. If `None`, `E_1,min` and `E_2,min` are computed.
@@ -819,7 +820,7 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
       at the primes of potential good reduction for `y^2 = f(x)`.
     OUTPUT: A list of `p`-adic numbers.
 
-    Changed precision of Hq from 10 to n, KF2024.
+    KF 2024 edits: Changed precision of Hq from 10 to n, added L input and bad_primes_4
     """
     a0 = f[0]
     a6 = f[6]
@@ -839,10 +840,12 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
         E1min = Emins[0]
         E2min = Emins[1]
     K = Qp(p,n)
+    D = L.discriminant() #KF2024
     bad_primes_1, W1 = local_heights_at_bad_primes_new(E1min, E1, K)
     bad_primes_2, W2 = local_heights_at_bad_primes_new(E2min, E2, K)
     bad_primes_3 = f7(ZZ(a0).prime_factors() + ZZ(a6).prime_factors())
-    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3)
+    bad_primes_4 = prime_divisors(D) #KF2024
+    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3 + bad_primes_4) #KF2024
     Wqprimelist = []
     for q in bad_primes:
         if potential_good_primes == True:
@@ -1139,12 +1142,6 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         print("Number of elements in Omega =", size_Omega);
     else:
         size_Omega = len(Omega)
-    
-    #JB2023, for the X0(37) examples #Kate to examine
-    if f == -x^6 -9*x^4 - 11*x^2 + 37 and F == QuadraticField(-1):
-        Omega.remove(Omega[0])
-        Omega.remove(Omega[0])
-        size_Omega = size_Omega - 2
 
     points = [[] for i in range(size_Omega)]
     rho_list = []
