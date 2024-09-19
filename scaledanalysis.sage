@@ -48,7 +48,7 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
  				p = next_prime(p)
 	if checked == True:
  			return p
-    else:
+    	else:
 			return None
  
 def qcanalysis(file,degree=1,field=None,up_to_auto=True):
