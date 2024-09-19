@@ -40,7 +40,7 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
   				checked = True
 			else:
  				p = next_prime(p)
-    else:
+    	else:
    		while checked == False and p < pbound:
  			if E1.has_good_reduction(p1) and E2.has_good_reduction(p1) and E1.is_ordinary(p1) and E2.is_ordinary(p1):
   				checked = True
