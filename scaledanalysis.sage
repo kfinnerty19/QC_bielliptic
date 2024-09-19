@@ -71,7 +71,7 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 	R.<x> = PolynomialRing(Rationals())
 	result = defaultdict(list)
 	for line in open(filename).readlines():
-		f=line
+		f=eval(line)
 		a6 = f[6]
 		a4 = f[4]
 		a2 = f[2]
