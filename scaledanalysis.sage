@@ -31,7 +31,7 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
     A prime p suitable for use in the given quadratic Chabauty experiment, or None indicating no such prime below the bound exists.
     """
 	p = startp
-	if p = None:
+	if p == None:
 		return None
 	checked = False
  	if D != None:
