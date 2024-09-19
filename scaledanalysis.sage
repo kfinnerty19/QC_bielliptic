@@ -24,13 +24,15 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
     Find a prime p greater than or equal to a given starting prime such that p is of good and ordinary reduction for two given and elliptic curves and, if D is not none, splits in a given number field. 
     INPUT:
     - ``E1`` and ``E2`` -- Two elliptic curves over `\QQ'. 
-    - ``startp`` -- A prime integer
+    - ``startp`` -- A prime integer or None (None passed in if a previous call to the function returned None, in which case None is returned automatically)
 	- ``D`` -- If not n
  	- ``pbound`` -- An integer indicating an upper bound up to which to check primes. It is disadvantageous to work with too large primes.
     OUTPUT:
     A prime p suitable for use in the given quadratic Chabauty experiment, or None indicating no such prime below the bound exists.
     """
 	p = startp
+	if p = None:
+		return None
 	checked = False
  	if D != None:
 		while checked == False and p < pbound:
@@ -64,6 +66,7 @@ def qcanalysis(file,degree=1,field=None,up_to_auto=True):
     - Four lists: `rat_points_1', `rat_points_2', `other_points_1', and `other_points_2' that store the results of the quadratic Chabauty analysis for each p.
     - If degree=2 and field=None, there is also `D', indicating that the analysis for that curve was performed over `\QQ[\sqrt{-D}]'
     If degree=2 and field!=None, some values may be errors, indicating the reason why the analysis failed for the specified field.
+    The results are presented in this order: [(D,)p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2]
     """
 R.<x> = PolynomialRing(Rationals())
 result = defaultdict(list)
@@ -78,36 +81,44 @@ for line in open('rank2forsage.txt').readlines():
 	if degree = 1:
  		assert Rank(E1)==1 and Rank(E2)==1, "Both elliptic curves need rank 1 to perform analysis over QQ"
  		p1 = pfinder(E1,E2,5)
-	    p2 = pfinder(E1,E2,next_prime(p1)
+	    	p2 = pfinder(E1,E2,next_prime(p1))
+		if p2 = None:
+			result[C].append(["No 2 suitable primes"])
+			continue
 		rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(C,p1,20,up_to_auto=up_to_auto)
   		rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(C,p2,20,up_to_auto=up_to_auto)
-		result[C]
+		result[C].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
 	else:
  		assert degree=2, "Only degree 1 and 2 supported"
    		if field = None:
-			#find a D value that works, ie over which the ranks jump
+			#find a D value that works (checking up to 20), ie over which the ranks jump
    			D = 1
-	  		while rankjumpcheck(E1,E2,D)==False: #Do I want to implement a cap on D? Probably
-   				D = D+1
-	   		S.<a> = NumberField(x^2+D)
-	  		p1 = pfinder(E1,E2,5,D=D)
-	 		p2 = pfinder(E1,E2,next_prime(p1),D=D)
-			#need a way to potentially change D
+			p2 = None
+			while D<20 and p2==None:
+	  			while rankjumpcheck(E1,E2,D)==False and D<20: 
+   					D = D+1
+	   			if rankjumpcheck(E1,E2,D)==False:
+					result[C].append(["no good (D,p1,p2)"])
+					continue
+				S.<a> = NumberField(x^2+D)
+	  			p1 = pfinder(E1,E2,5,D=D)
+				p2 = pfinder(E1,E2,next_prime(p1),D=D)
+				if p2==None:
+					D=D+1
    			rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(C,p1,20,up_to_auto=up_to_auto,F=S)
   			rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(C,p2,20,up_to_auto=up_to_auto,F=S)
+			result[C].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
   		else:
 			D = field
    			S.<a> = NumberField(x^2+D)
 	  		p1 = pfinder(E1,E2,5,D=D)
-	 		try:
-	 			p2 = pfinder(E1,E2,next_prime(p1),D=D)
-	 		except:
-				#a way to indicate that it failed for this field
+			p2 = pfinder(E1,E2,next_prime(p1),D=D)
 			if p2 == None:
-   				# a way to indicate that it failed for this field
+   				result[C].append(["No 2 suitable primes"])
 	   		else:
    				rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(C,p1,20,up_to_auto=up_to_auto,F=S)
   				rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(C,p2,20,up_to_auto=up_to_auto,F=S)
+				result[C].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
 
    return result
    
