@@ -11,7 +11,7 @@ def rankjumpcheck(E1,E2,D):
     A boolean True/False indicating if the sum of the ranks of E1/K and E2/K is 2 or not.
     """
 	S.<a> = NumberField(x^2+D)
- 	E1S = E1.change_ring(S)
+	E1S = E1.change_ring(S)
 	E2S = E2.change_ring(S)
  	sum = Rank(E1S)+Rank(E2S)
   	if sum == 2:
