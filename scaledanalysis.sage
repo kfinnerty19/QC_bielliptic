@@ -34,7 +34,7 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
 	if p == None:
 		return None
 	checked = False
- 	if D != None:
+	if D != None:
 		while checked == False and p < pbound:
  			if kronecker(-D,p)==1 and E1.has_good_reduction(p1) and E2.has_good_reduction(p1) and E1.is_ordinary(p1) and E2.is_ordinary(p1):
   				checked = True
