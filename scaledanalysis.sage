@@ -30,8 +30,8 @@ def pfinder(E1, E2, startp, D=None,pbound=15):
     OUTPUT:
     A prime p suitable for use in the given quadratic Chabauty experiment, or None indicating no such prime below the bound exists.
     """
-	p = startp
-	if p == None:
+	p = next_prime(startp)
+	if startp == None:
 		return None
 	checked = False
 	if D != None:
@@ -71,6 +71,7 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 	R.<x> = PolynomialRing(Rationals())
 	result = defaultdict(list)
 	for line in open(filename).readlines():
+		print("neweq")
 		f=eval(line)
 		a6 = f[6]
 		a4 = f[4]
@@ -103,11 +104,13 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 					if rankjumpcheck(E1,E2,D)==False:
 						result[f].append(["no good (D,p1,p2)"])
 						continue
+					print("pfinding", D)
 					S.<a> = NumberField(x^2+D)
-					p1 = pfinder(E1,E2,5,D=D)
-					p2 = pfinder(E1,E2,next_prime(p1),D=D)
+					p1 = pfinder(E1,E2,3,D=D) 
+					p2 = pfinder(E1,E2,p1,D=D)
 					if p2==None:
 						D=D+1
+				print("using", D)
 				try:
 					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
 					rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
