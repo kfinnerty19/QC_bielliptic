@@ -104,7 +104,6 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 					if rankjumpcheck(E1,E2,D)==False:
 						result[f].append(["no good (D,p1,p2)"])
 						continue
-					print("pfinding", D)
 					S.<a> = NumberField(x^2+D)
 					p1 = pfinder(E1,E2,3,D=D) 
 					p2 = pfinder(E1,E2,p1,D=D)
