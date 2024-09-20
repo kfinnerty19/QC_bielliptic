@@ -19,7 +19,7 @@ def rankjumpcheck(E1,E2,D):
 	else:
  		return False
 
-def pfinder(E1, E2, startp, D=None,pbound=15):
+def pfinder(E1, E2, startp, D=None,pbound=8):
 	r"""
     Find a prime p greater than or equal to a given starting prime such that p is of good and ordinary reduction for two given and elliptic curves and, if D is not none, splits in a given number field. 
     INPUT:
@@ -82,14 +82,15 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 		if degree == 1:
 			assert E1.rank()==1 and E2.rank()==1, "Both elliptic curves need rank 1 to perform analysis over QQ"
 			p1 = pfinder(E1,E2,5)
-			p2 = pfinder(E1,E2,next_prime(p1))
-			if p2 == None:
-				result[f].append(["No 2 suitable primes"])
-				continue
+			#p2 = pfinder(E1,E2,next_prime(p1))
+			#if p2 == None:
+			#	result[f].append(["No 2 suitable primes"])
+			#	continue
 			try:
 				rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto)
-				rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto)
-				result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+				#rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto)
+				#result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+				result[f].append([p1,rat_points_1,other_points_1])
 			except:
 				result[f].append(["qc error"])
 		else:
@@ -97,8 +98,7 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 			if field == None:
 			#find a D value that works (checking up to 20), ie over which the ranks jump
 				D = 1
-				p2 = None
-				while D<20 and p2==None:
+				while D<20:
 					while rankjumpcheck(E1,E2,D)==False and D<20:
 						D = D+1
 					if rankjumpcheck(E1,E2,D)==False:
@@ -106,14 +106,15 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 						continue
 					S.<a> = NumberField(x^2+D)
 					p1 = pfinder(E1,E2,3,D=D) 
-					p2 = pfinder(E1,E2,p1,D=D)
-					if p2==None:
-						D=D+1
+					#p2 = pfinder(E1,E2,p1,D=D)
+					if p1!=None:
+						break
 				print("using", D)
 				try:
 					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
-					rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
-					result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+					#rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
+					#result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+					result[f].append([D,p1,rat_poits_1,other_points_1])
 				except:
 					result[f].append(["qc error"])
 			else:
