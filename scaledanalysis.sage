@@ -85,9 +85,12 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 			if p2 == None:
 				result[f].append(["No 2 suitable primes"])
 				continue
-			rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto)
-			rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto)
-			result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+			try:
+				rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto)
+				rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto)
+				result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+			except:
+				result[f].append(["qc error"])
 		else:
 			assert degree==2, "Only degree 1 and 2 supported"
 			if field == None:
@@ -105,9 +108,12 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 					p2 = pfinder(E1,E2,next_prime(p1),D=D)
 					if p2==None:
 						D=D+1
-				rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(C,p1,20,up_to_auto=up_to_auto,F=S)
-				rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(C,p2,20,up_to_auto=up_to_auto,F=S)
-				result[C].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+				try:
+					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
+					rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
+					result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+				except:
+					result[f].append(["qc error"])
 			else:
 				D = field
 				S.<a> = NumberField(x^2+D)
@@ -116,8 +122,11 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 				if p2 == None:
 					result[f].append(["No 2 suitable primes"])
 				else:
-					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(C,p1,20,up_to_auto=up_to_auto,F=S)
-					rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(C,p2,20,up_to_auto=up_to_auto,F=S)
-					result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+					try:
+						rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
+						rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
+						result[f].append([p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+					except:
+						result[f].append(["qc error"])
 
 	return result	
