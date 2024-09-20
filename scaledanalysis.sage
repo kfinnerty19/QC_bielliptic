@@ -8,12 +8,15 @@ def rankjumpcheck(E1,E2,D):
     - ``E1`` and ``E2`` -- Two elliptic curves over `\QQ'. One should be rank 1 and one should be rank 0, but the order doesn't matter.
     - ``D`` -- An integer indicating the number field `\QQ[\sqrt{-D}]'.
     OUTPUT:
-    A boolean True/False indicating if the sum of the ranks of E1/K and E2/K is 2 or not.
+    A boolean True/False indicating if the sum of the ranks of E1/K and E2/K is 2 or not. Returns False if rank() fails and value is indeterminate
     """
 	S.<a> = NumberField(x^2+D)
 	E1S = E1.change_ring(S)
 	E2S = E2.change_ring(S)
-	sum = E1S.rank()+E2S.rank()
+	try:
+		sum = E1S.rank()+E2S.rank()
+	except:
+		return False
 	if sum == 2:
    		return True
 	else:
@@ -98,25 +101,26 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 			if field == None:
 			#find a D value that works (checking up to 20), ie over which the ranks jump
 				D = 1
-				while D<20:
+				allset = False
+				while D<20 and allset==False:
 					while rankjumpcheck(E1,E2,D)==False and D<20:
 						D = D+1
 					if rankjumpcheck(E1,E2,D)==False:
 						result[f].append(["no good (D,p1,p2)"])
 						continue
-					S.<a> = NumberField(x^2+D)
 					p1 = pfinder(E1,E2,3,D=D) 
-					#p2 = pfinder(E1,E2,p1,D=D)
 					if p1!=None:
-						break
-				print("using", D)
+						allset = True
+					else:
+						D = D+1
 				try:
+					S.<a>=NumberField(x^2+D)
 					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
 					#rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
 					#result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
 					result[f].append([D,p1,rat_poits_1,other_points_1])
 				except:
-					result[f].append(["qc error"])
+					result[f].append([D,p1,"qc error"])
 			else:
 				D = field
 				S.<a> = NumberField(x^2+D)
