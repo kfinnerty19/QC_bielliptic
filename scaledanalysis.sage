@@ -13,7 +13,7 @@ def rankjumpcheck(E1,E2,D):
 	S.<a> = NumberField(x^2+D)
 	E1S = E1.change_ring(S)
 	E2S = E2.change_ring(S)
-	sum = Rank(E1S)+Rank(E2S)
+	sum = E1S.rank()+E2S.rank()
 	if sum == 2:
    		return True
 	else:
