@@ -113,14 +113,17 @@ def qcanalysis(filename,degree=1,field=None,up_to_auto=True):
 						allset = True
 					else:
 						D = D+1
-				try:
-					S.<a>=NumberField(x^2+D)
-					rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
-					#rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
-					#result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
-					result[f].append([D,p1,rat_poits_1,other_points_1])
-				except:
-					result[f].append([D,p1,"qc error"])
+				if p1==None:
+					result[f].append(["no good (D,p1,p2)"])
+				else:
+					try:
+						S.<a>=NumberField(x^2+D)
+						rat_points_1, other_points_1 = quadratic_chabauty_bielliptic(f,p1,20,up_to_auto=up_to_auto,F=S)
+						#rat_points_2, other_points_2 = quadratic_chabauty_bielliptic(f,p2,20,up_to_auto=up_to_auto,F=S)
+						#result[f].append([D,p1,rat_points_1,other_points_1,p2,rat_points_2,other_points_2])
+						result[f].append([D,p1,rat_points_1,other_points_1])
+					except:
+						result[f].append([D,p1,"qc error"])
 			else:
 				D = field
 				S.<a> = NumberField(x^2+D)
