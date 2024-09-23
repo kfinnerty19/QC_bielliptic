@@ -8,12 +8,15 @@ def rankjumpcheck(E1,E2,D):
     - ``E1`` and ``E2`` -- Two elliptic curves over `\QQ'. One should be rank 1 and one should be rank 0, but the order doesn't matter.
     - ``D`` -- An integer indicating the number field `\QQ[\sqrt{-D}]'.
     OUTPUT:
-    A boolean True/False indicating if the sum of the ranks of E1/K and E2/K is 2 or not.
+    A boolean True/False indicating if the sum of the ranks of E1/K and E2/K is 2 or not, or False if not computable.
     """
 	S.<a> = NumberField(x^2+D)
 	E1S = E1.change_ring(S)
 	E2S = E2.change_ring(S)
-	sum = E1S.rank()+E2S.rank()
+	try:
+		sum = E1S.rank()+E2S.rank()
+	except:
+		return False
 	if sum == 2:
    		return True
 	else:
