@@ -14,10 +14,11 @@ def rankjumpcheck(E1,E2,D):
 	E1S = E1.change_ring(S)
 	E2S = E2.change_ring(S)
 	try:
-		sum = E1S.rank()+E2S.rank()
+		r1 = E1S.rank()
+		r2 = E2S.rank()
 	except:
 		return False
-	if sum == 2:
+	if r1 == 1 and r2 == 1:
    		return True
 	else:
  		return False
@@ -37,10 +38,16 @@ def pfinder(E1, E2, startp, D=None,pbound=8):
 	if startp == None:
 		return None
 	checked = False
+	S.<a> = NumberField(x^2+D)
 	if D != None:
 		while checked == False and p < pbound:
-			if kronecker(-D,p)==1 and E1.has_good_reduction(p) and E2.has_good_reduction(p) and E1.is_ordinary(p) and E2.is_ordinary(p):
-				checked = True
+			if E1.has_good_reduction(p) and E2.has_good_reduction(p) and E1.is_ordinary(p) and E2.is_ordinary(p):
+				I = S.ideal(p)
+				F = I.factor()
+				if len(F)==2:
+					checked = True
+				else:
+					p = next_prime(p)
 			else:
  				p = next_prime(p)
 	else:
