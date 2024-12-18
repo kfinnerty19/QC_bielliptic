@@ -10,7 +10,6 @@ The main function is `quadratic_chabauty_bielliptic(f, p, n)`.
 Modified version of the following files:
 https://github.com/bianchifrancesca/quadratic_chabauty/blob/master/quadratic_chabauty_bielliptic.sage
 https://github.com/bianchifrancesca/QC_bielliptic/blob/main/qc_g2_bielliptic.sage
-https://github.com/jbalakrishnan/QC_bielliptic/blob/main/qc_g2_bielliptic.sage
 
 Some differences to previous version:
 
@@ -24,7 +23,6 @@ Some differences to previous version:
   using the formal group, and division polynomials. See for example `int_w1_b`for integrals of the second kind on elliptic curves.
   This may be of independent interest as it works in bad reduction too. We check it in bad reduction against an example in [Kay22].
 
-- Kate to do: add documentation
 
 EXAMPLES::
     sage: R.<x> = PolynomialRing(Rationals())
@@ -80,7 +78,6 @@ REFERENCES:
 AUTHORS:
 - Francesca Bianchi (main code repository)
 - Jennifer Balakrishnan (small edits, indicated by JB2023)
-- Kate Finnerty (small edits, indicated by KF2024)
 """
 ############## AUXILIARY FUNCTIONS ##############
 
@@ -89,7 +86,7 @@ import itertools
 def embeddings(K,p,prec):
     r"""
     The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
-    
+
     Added to the forked repo, JB2023.
     """
     Q = Qp(p,prec)
@@ -110,9 +107,9 @@ def embeddings(K,p,prec):
 
 def cyc_padic_height_quad(E,K,P,p):
     r"""
-    The cyclotomic `p`-adic height of `P` on the elliptic curve `E`, where `P` is defined 
+    The cyclotomic `p`-adic height of `P` on the elliptic curve `E`, where `P` is defined
     over the quadratic field `K`.
-    
+
     Added to the forked repo, JB2023.
     """
     psi1,psi2 = embeddings(K,p,20)
@@ -226,8 +223,6 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A p-adic number: the `v`-adic component of the `p`-adic height of `P`
     if `v` is a place; the sum of the components away from `p` of the
     `p`-adic height of `P` if `v` is `None`.
-
-    [KF2024]: added some comments
     """
     #Note the following is not checked in the original
     #sage code, but I think it is assumed in some places.
@@ -288,14 +283,14 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A = (3*x**2 + 2*a2*x + a4 - a1*y).valuation(v)
     B = (2*y+a1*x+a3).valuation(v)
     C = (3*x**4 + b2*x**3 + 3*b4*x**2 + 3*b6*x + b8).valuation(v)
-    if A <= 0 or B <= 0: #good reduction [KF2024]
+    if A <= 0 or B <= 0: #good reduction [KF]
         r = max(0, -x.valuation(v))
-    elif c4.valuation(v) == 0: #multiplicative reduction [KF2024]
+    elif c4.valuation(v) == 0: #multiplicative reduction [KF]
         n = min(B, N/2)
         r = -n*(N-n)/N
-    elif C >= 3*B: #additive reduction of type IV or IV* [KF2024]
+    elif C >= 3*B: #additive reduction of type IV or IV* [KF]
         r = -2*B/3
-    else: #additive reduction of type III, III*, or I*M [KF2024]
+    else: #additive reduction of type III, III*, or I*M [KF]
         r = -C/4
     r -= offset/6
     if not r:
@@ -409,7 +404,6 @@ def local_coordinates_at_infinity_g2_even(H, prec = 20, name = 't'):
     Return local coordinates at one of the points at infinity on
      `H`, given by `y^2 = f(x)` where `deg f` is even.
     """
-    print("Called local coordinates at infinity g2 even")
     pols = H.hyperelliptic_polynomials()
     assert pols[1] == 0,  "Need H in the form y^2 = f(x)"
     pol = pols[0]
@@ -567,7 +561,6 @@ def int_w1_b(E, P, p, m, prec, fm = False, Dfm = False):
         4*5 + 3*5^3 + 3*5^5 + 3*5^6 + 3*5^9 + O(5^10)
         sage: int_w1_b(E, P, p, 8, 10) ==  int_w1_b(E, P, p, 16, 10)
         True
-
     Comparing with the Coleman integration algorithm:
         sage: Eshort = E.short_weierstrass_model()
         sage: EshortK = Eshort.change_ring(Qp(p,22))
@@ -576,7 +569,6 @@ def int_w1_b(E, P, p, m, prec, fm = False, Dfm = False):
         3*5 + 5^2 + 5^3 + 5^4 + 5^5 + 2*5^6 + 5^7 + 5^9 + 5^10 + 3*5^11 + 5^12 + 2*5^13 + 5^14 + 5^15 + 2*5^16 + 3*5^17 + 5^18 + 2*5^19 + 5^20 + 4*5^21 + 5^22 + O(5^23)
         sage: int_w1_b(Eshort, phi(P), p, 8, 22) #not comparing the 5^22-digit as it's not correct in the Coleman integration algorithm (try increasing prec and see it changes.)
         3*5 + 5^2 + 5^3 + 5^4 + 5^5 + 2*5^6 + 5^7 + 5^9 + 5^10 + 3*5^11 + 5^12 + 2*5^13 + 5^14 + 5^15 + 2*5^16 + 3*5^17 + 5^18 + 2*5^19 + 5^20 + 4*5^21 + O(5^22)
-
     An example in bad reduction: the final output of this
     computation should match the integral between `-R` and `R`
     in Example 7.1 of [Kay22]. Indeed it does.
@@ -802,7 +794,7 @@ def coefficients_mod_pN_v2(f, points, im_divisors, base_pt, p, N, k=5):
     return coeffs
 
 
-def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True):
+def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
     r"""
     Compute a finite set containing Omega
     INPUT:
@@ -811,7 +803,6 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
     - ``p`` -- an odd prime such that `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` have good reduction at `p`.
     - ``n`` -- working `p`-adic precision.
-    - ``L`` -- an imaginary quadratic number field or QQ #KF2024
     - ``Es`` -- `[E_1, E_2]` or `None`. If `None`, `E_1` and `E_2` are computed.
     - ``Emins`` -- `[E_1,min, E_2,min]` where `E_i,min` is a global minimal model for `E_i`,
       or `None`. If `None`, `E_1,min` and `E_2,min` are computed.
@@ -819,8 +810,6 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
       is not provided, it uses the fact that there is only one contribution
       at the primes of potential good reduction for `y^2 = f(x)`.
     OUTPUT: A list of `p`-adic numbers.
-
-    KF 2024 edits: Changed precision of Hq from 10 to n, added L input and bad_primes_4.
     """
     a0 = f[0]
     a6 = f[6]
@@ -840,33 +829,38 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
         E1min = Emins[0]
         E2min = Emins[1]
     K = Qp(p,n)
-    D = L.discriminant() #KF2024
     bad_primes_1, W1 = local_heights_at_bad_primes_new(E1min, E1, K)
     bad_primes_2, W2 = local_heights_at_bad_primes_new(E2min, E2, K)
     bad_primes_3 = f7(ZZ(a0).prime_factors() + ZZ(a6).prime_factors())
-    bad_primes_4 = prime_divisors(D) #KF2024
-    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3 + bad_primes_4) #KF2024
+    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3)
     Wqprimelist = []
     for q in bad_primes:
         if potential_good_primes == True:
             if has_potential_good_reduction(H, q) == True:
-                print("using potential good reduction at", q)
-                phi1 = E1.isomorphism_to(E1min)
-                phi2 = E2.isomorphism_to(E2min)
-                Hq = H.change_ring(Qp(q,n))
-                for xq in [1,..,q, q^(-1),q^(-2),q^(-3),q^(-4)]:
+                instring = "R<x>:=PolynomialRing(Rationals());X:=HyperellipticCurve("+str(f)+");IsLocallySolvable(X,"+str(q)+");"
+                haspoint = magma_free(instring)
+                #print(haspoint)
+                if haspoint[0:4] == 'true':
+                    #print("using potential good reduction at", q)
+                    phi1 = E1.isomorphism_to(E1min)
+                    phi2 = E2.isomorphism_to(E2min)
+                    Hq = H.change_ring(Qp(q,n))
+                    for xq in [1,..,q, q^(-1),q^(-2),q^(-3),q^(-4)]:
+                        try:
+                            Pq = Hq.lift_x(xq)
+                            f1Pq = X_to_E1map(Pq, E1.change_ring(Qp(q,n)), a6)
+                            f2Pq = X_to_E2map(Pq, E2.change_ring(Qp(q,n)), a0, a6)
+                            break
+                        except ValueError:
+                            pass
                     try:
-                        Pq = Hq.lift_x(xq)
-                        f1Pq = X_to_E1map(Pq, E1.change_ring(Qp(q,10)), a6)
-                        f2Pq = X_to_E2map(Pq, E2.change_ring(Qp(q,10)), a0, a6)
-                        break
-                    except ValueError:
+                        lambdaqf1P_min = non_archimedean_local_height(phi1(f1Pq), q, p, n,is_minimal=True)
+                        lambdaqf2P_min = non_archimedean_local_height(phi2(f2Pq), q, p, n,is_minimal=True)
+                        Wqprime = [-lambdaqf1P_min + lambdaqf2P_min - 2*(Pq[0].valuation(q))*log(K(q))]
+                        Wqprimelist.append(Wqprime)
+                        continue
+                    except TypeError:
                         pass
-                lambdaqf1P_min = non_archimedean_local_height(phi1(f1Pq), q, p, n,is_minimal=True)
-                lambdaqf2P_min = non_archimedean_local_height(phi2(f2Pq), q, p, n,is_minimal=True)
-                Wqprime = [-lambdaqf1P_min + lambdaqf2P_min - 2*(Pq[0].valuation(q))*log(K(q))]
-                Wqprimelist.append(Wqprime)
-                continue
 
         if q in bad_primes_1:
             WE1q = W1[bad_primes_1.index(q)]
@@ -907,6 +901,9 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
 
 
 ############## MAIN FUNCTION ###############
+def smallpol(polynomial):
+    return all(abs(coef) < 1000 for coef in polynomial.coefficients())
+
 
 def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = True, up_to_auto = False, omega_info = False, F = QQ):
     r"""
@@ -914,7 +911,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     INPUT:
     - ``f`` -- a polynomial over `\QQ` of the form `a_6*x^6 + a_4*x^4 + a_2*x^2 + a_0`,
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
-      and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when 
+      and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when
       `F` is an imaginary quadratic field the two elliptic curves should have rank `1` over `F` [KF2024]
     - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
@@ -930,8 +927,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       items are returned up to the automorphisms `(x,y) \mapsto (\pm x,\pm y)`
     - ``omega_info`` -- True/False (default False): if True, the output is partitioned
       according to elements in `Omega`.
-    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2024]  
-      
+    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2024]
+
     OUTPUT: If `omega_info` is False: A tuple consisting of:
     - A sorted list of rational points on `H`.
     - A sorted list of `p`-adic points on `H` which have not been recognised as rational points.
@@ -957,12 +954,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         [(-3/4 : -43/64 : 1), (-3/4 : 43/64 : 1), (0 : -2 : 1), (0 : 1 : 0), (0 : 2 : 1), (3/4 : -43/64 : 1), (3/4 : 43/64 : 1)]
         sage: other_points
         []
-
     Same example, but computing points up to automorphism:
         sage: quadratic_chabauty_bielliptic(f,3,20,up_to_auto = True)
         Number of elements in Omega = 3
         ([(0 : 1 : 0), (0 : 2 : 1), (3/4 : -43/64 : 1)], [])
-
     For the same curve quadratic Chabauty with p = 5 would not suffice to determine the rational points:
         sage: rat_points,other_points = quadratic_chabauty_bielliptic(f,5,20)
         Number of elements in Omega = 3
@@ -970,7 +965,6 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         [(-3/4 : -43/64 : 1), (-3/4 : 43/64 : 1), (0 : -2 : 1), (0 : 1 : 0), (0 : 2 : 1), (3/4 : -43/64 : 1), (3/4 : 43/64 : 1)]
         sage: len(other_points)
         8
-
     Omega info: we can sometimes determine the set of rational points by using more than one prime and
     comparing only extra points corresponding to compatible elements in Omega, as in the following example:
         sage: R.<x> = PolynomialRing(Rationals())
@@ -1010,8 +1004,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     #sage: phi = E.isomorphism_to(Eshort)
     #sage: Eshort.padic_height(5)(2*phi(P)) - 4*Eshort.padic_height(5)(phi(P)) #should be 0
     #5 + 4*5^2 + 4*5^3 + 2*5^5 + 5^7 + 5^8 + 2*5^9 + 5^10 + 4*5^11 + 3*5^12 + 5^13 + 5^16 + 5^18 + O(5^20)
-
-    #JB2023 edits below	
+    #JB2023 edits below
     E1m = E1.minimal_model()
     E2m = E2.minimal_model()
     delta1 = E1.discriminant()/E1m.discriminant()
@@ -1054,9 +1047,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     E2p = E2.change_ring(GF(p))
     m1 = E1p.abelian_group().exponent()
     m2 = E2p.abelian_group().exponent()
-    #Not very smart to compute the height on the minimal model
-    #when we are already computing E2 and sigma on non-minimal models
-    #... but oh well.
+
     E2_p_1 = E1.padic_E2(p, n + p.valuation(3), check_hypotheses=False) #n-2 would suffice for sigma (at least if p>=5)
     E2_p_2 = E2.padic_E2(p, n + p.valuation(3), check_hypotheses=False)
     try:
@@ -1075,12 +1066,12 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     Log_prec = adjusted_prec_Log(n + max([m1.valuation(p), m2.valuation(p)]), p)
     Log1 = E1.formal_group().log(prec=Log_prec).truncate()
     Log2 = E2.formal_group().log(prec=Log_prec).truncate()
-    
+
     #JB2023 edits below
     if D != 1:
         frakp = factor(p*S)
         frakp0 = frakp[0][0]
-        ordP1 = P1.reduction(frakp0).order() 
+        ordP1 = P1.reduction(frakp0).order()
     else:
         ordP1 = E1p(P1).order()
     mP1 = ordP1*P1
@@ -1098,15 +1089,15 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         Log1P1 = 1/ordP1*Log1(K(-(mP1[0]/mP1[1]))) + O(p^n)
         Log2P2 = 1/ordP2*Log2(K(-(mP2[0]/mP2[1]))) + O(p^n)
     #JB2023 edits end
-        
+
     Log1P1 = Qp(p, n-Log1P1.valuation())(Log1P1)
     Log2P2 = Qp(p, n-Log2P2.valuation())(Log2P2)
-    
+
     if D!= 1:                     #JB2023
         alpha1 = -p* hP1/Log1P1^2 #JB2023
         alpha2 = -p* hP2/Log2P2^2 #JB2023
     else:
-        alpha1 = hP1/Log1P1^2	
+        alpha1 = hP1/Log1P1^2
         alpha2 = hP2/Log2P2^2
 
     #Discs
@@ -1137,7 +1128,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
 
     #Computing Omega if not provided
     if Omega == []:
-        Omega = Omega_set(f, p, n, S,  Es = [E1,E2], Emins = [E1m, E2m], potential_good_primes = potential_good_primes) #KF2024
+        Omega = Omega_set(f, p, n,  Es = [E1,E2], Emins = [E1m, E2m], potential_good_primes = potential_good_primes)
         size_Omega = len(Omega)
         print("Number of elements in Omega =", size_Omega);
     else:
@@ -1169,10 +1160,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m1*f1 == E1K(0,1,0):
             Logf1 = 0
             try:
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(0,1,0), H1K(f1))[1] ##########################IMPROVE
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
             except NameError:
                 H1K = HyperellipticCurve(E1K.hyperelliptic_polynomials()[0])
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(0,1,0), H1K(f1))[1]
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
             if f1[1] != 0:
                 f1alg_x = QQ(f1[0])
                 try:
@@ -1199,10 +1190,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m2*f2 == E2K(0,1,0):
             Logf2 = 0
             try:
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(0,1,0), H2K(f2))[1] ##########################IMPROVE
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(-f2), H2K(f2))[1]*(1/2)
             except NameError:
                 H2K = HyperellipticCurve(E2K.hyperelliptic_polynomials()[0])
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(0,1,0), H2K(f2))[1]
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(f2), H2K(f2))[1]*(1/2)
             if f2[1] != 0:
                 f2alg_x = QQ(f2[0])
                 try:
@@ -1377,6 +1368,18 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
                 other_points_complete.extend([P,HK(P[0],-P[1], P[2]), HK(-P[0],P[1],P[2]),HK(-P[0],-P[1],P[2])])
             rational_points[l] = list(Set(rational_points_complete))
             other_points[l] = list(Set(other_points_complete))
+            ### added!!
+            for P in other_points[l]:
+                try:
+                    F = algdep(P[0],4)
+                    G = algdep(P[1],4)
+                    Kb.<b> = NumberField(F)
+                    Lc.<c> = NumberField(G)
+                    if Kb.is_isomorphic(Lc) or (smallpol(F) and smallpol(G)):
+                        print(F,G)
+                        print("Found something?")
+                except:
+                    pass
         else:
             rational_points_auto = []
             for P in rational_points[l]:
