@@ -1034,8 +1034,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         hP1 = cyc_padic_height_quad(E1mS, S, P1m, p)
         hP2 = cyc_padic_height_quad(E2mS, S, P2m, p)
     else:
-        hP1 = E1mS.padic_height(p)(P1m)
-        hP2 = E2mS.padic_height(p)(P2m)
+        hP1 = E1mS.padic_height(p,n)(P1m)
+        hP2 = E2mS.padic_height(p,n)(P2m)
     P1 = psi1(P1m)
     P2 = psi2(P2m)
     #JB2023 edits end
