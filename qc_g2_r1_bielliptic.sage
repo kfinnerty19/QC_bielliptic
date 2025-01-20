@@ -1,5 +1,5 @@
 r"""
-Code to perform Quadratic Chabauty on a genus 2, rank 2 bielliptic curve over a number field.
+Code to perform Quadratic Chabauty on a genus 2, rank 1 bielliptic curve over a number field.
 The main function is `quadratic_chabauty_bielliptic(f, p, n)`.
 !!NB!!: If the function returns a SageMath error, it could be because the `p`-adic precision `n` is too small.
         Try increasing it.
