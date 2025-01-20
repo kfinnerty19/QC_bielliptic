@@ -1,5 +1,5 @@
 R.<x>=PolynomialRing(Rationals())
-inputtuples = [11*x^6 + 11*x^4 - 7*x^2 + 1,
+equations = [11*x^6 + 11*x^4 - 7*x^2 + 1,
 -9*x^6 - 9*x^4 - 3*x^2 - 27,
 27*x^6 - 9*x^4 + x^2 - 3,
 3375*x^6 - 225*x^4 + 5*x^2 - 3,
