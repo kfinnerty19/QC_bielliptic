@@ -64,6 +64,7 @@ REFERENCES:
 AUTHORS:
 - Francesca Bianchi (main code repository)
 - Jennifer Balakrishnan (small edits, indicated by JB2023)
+- Kate Finnerty (small edits, indicated by KF2025)
 """
 ############## AUXILIARY FUNCTIONS ##############
 
@@ -210,6 +211,8 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A p-adic number: the `v`-adic component of the `p`-adic height of `P`
     if `v` is a place; the sum of the components away from `p` of the
     `p`-adic height of `P` if `v` is `None`.
+
+    Added reduction type comments, KF2025
     """
     #Note the following is not checked in the original
     #sage code, but I think it is assumed in some places.
@@ -272,12 +275,12 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     C = (3*x**4 + b2*x**3 + 3*b4*x**2 + 3*b6*x + b8).valuation(v)
     if A <= 0 or B <= 0: #good reduction [KF]
         r = max(0, -x.valuation(v))
-    elif c4.valuation(v) == 0: #multiplicative reduction [KF]
+    elif c4.valuation(v) == 0: #multiplicative reduction 
         n = min(B, N/2)
         r = -n*(N-n)/N
-    elif C >= 3*B: #additive reduction of type IV or IV* [KF]
+    elif C >= 3*B: #additive reduction of type IV or IV* 
         r = -2*B/3
-    else: #additive reduction of type III, III*, or I*M [KF]
+    else: #additive reduction of type III, III*, or I*M 
         r = -C/4
     r -= offset/6
     if not r:
@@ -820,12 +823,13 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
     bad_primes_1, W1 = local_heights_at_bad_primes_new(E1min, E1, K)
     bad_primes_2, W2 = local_heights_at_bad_primes_new(E2min, E2, K)
     bad_primes_3 = f7(ZZ(a0).prime_factors() + ZZ(a6).prime_factors())
-    bad_primes_4 = prime_divisors(D) #KF2024
+    bad_primes_4 = prime_divisors(D) #KF2025
     bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3 + bad_primes_4) #KF2024
     Wqprimelist = []
     for q in bad_primes:
         if potential_good_primes == True:
             if has_potential_good_reduction(H, q) == True:
+                ###edits below to check for the existence of a point, KF2025
                 instring = "R<x>:=PolynomialRing(Rationals());X:=HyperellipticCurve("+str(f)+");IsLocallySolvable(X,"+str(q)+");"
                 haspoint = magma_free(instring)
                 #print(haspoint)
@@ -1150,10 +1154,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m1*f1 == E1K(0,1,0):
             Logf1 = 0
             try:
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2) ### KF2025
             except NameError:
                 H1K = HyperellipticCurve(E1K.hyperelliptic_polynomials()[0])
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2) ### KF2025
             if f1[1] != 0:
                 f1alg_x = QQ(f1[0])
                 try:
@@ -1180,10 +1184,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m2*f2 == E2K(0,1,0):
             Logf2 = 0
             try:
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(-f2), H2K(f2))[1]*(1/2)
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(-f2), H2K(f2))[1]*(1/2) ### KF2025
             except NameError:
                 H2K = HyperellipticCurve(E2K.hyperelliptic_polynomials()[0])
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(f2), H2K(f2))[1]*(1/2)
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(f2), H2K(f2))[1]*(1/2) ### KF2025
             if f2[1] != 0:
                 f2alg_x = QQ(f2[0])
                 try:
@@ -1358,7 +1362,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
                 other_points_complete.extend([P,HK(P[0],-P[1], P[2]), HK(-P[0],P[1],P[2]),HK(-P[0],-P[1],P[2])])
             rational_points[l] = list(Set(rational_points_complete))
             other_points[l] = list(Set(other_points_complete))
-            ### added!!
+            ### added check for low-degree relations, KF2025. Change the second input to algdep to change degree.
             for P in other_points[l]:
                 try:
                     F = algdep(P[0],2)
