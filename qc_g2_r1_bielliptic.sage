@@ -74,11 +74,12 @@ def embeddings(K,p,prec):
     The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
 
     Added to the forked repo, JB2023.
+    Modified to use K.ideal(p) instead of K.maximal_order, KF2024.
     """
     Q = Qp(p,prec)
-    OK = K.maximal_order()
-    pOK = factor(p*OK)
-    if (len(pOK) == 2 and pOK[0][1] == 1):
+    I = K.ideal(p)
+    F = I.factor()
+    if (len(F) == 2 and F[0][1] == 1):
         R = Q['x']
         r1, r2 = R(K.defining_polynomial()).roots()
         psi1 = K.hom([r1[0]])
