@@ -78,6 +78,7 @@ REFERENCES:
 AUTHORS:
 - Francesca Bianchi (main code repository)
 - Jennifer Balakrishnan (small edits, indicated by JB2023)
+- Kate Finnerty (small edits, indicated by KF2025)
 """
 ############## AUXILIARY FUNCTIONS ##############
 
@@ -223,6 +224,8 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A p-adic number: the `v`-adic component of the `p`-adic height of `P`
     if `v` is a place; the sum of the components away from `p` of the
     `p`-adic height of `P` if `v` is `None`.
+
+    Added reduction type comments, KF2025
     """
     #Note the following is not checked in the original
     #sage code, but I think it is assumed in some places.
@@ -283,14 +286,14 @@ def non_archimedean_local_height(P, v, p, prec, weighted=False, is_minimal=None)
     A = (3*x**2 + 2*a2*x + a4 - a1*y).valuation(v)
     B = (2*y+a1*x+a3).valuation(v)
     C = (3*x**4 + b2*x**3 + 3*b4*x**2 + 3*b6*x + b8).valuation(v)
-    if A <= 0 or B <= 0: #good reduction [KF]
+    if A <= 0 or B <= 0: #good reduction
         r = max(0, -x.valuation(v))
-    elif c4.valuation(v) == 0: #multiplicative reduction [KF]
+    elif c4.valuation(v) == 0: #multiplicative reduction
         n = min(B, N/2)
         r = -n*(N-n)/N
-    elif C >= 3*B: #additive reduction of type IV or IV* [KF]
+    elif C >= 3*B: #additive reduction of type IV or IV*
         r = -2*B/3
-    else: #additive reduction of type III, III*, or I*M [KF]
+    else: #additive reduction of type III, III*, or I*M 
         r = -C/4
     r -= offset/6
     if not r:
@@ -837,6 +840,7 @@ def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
     for q in bad_primes:
         if potential_good_primes == True:
             if has_potential_good_reduction(H, q) == True:
+                ###edits below to check for the existence of a point, KF2025
                 instring = "R<x>:=PolynomialRing(Rationals());X:=HyperellipticCurve("+str(f)+");IsLocallySolvable(X,"+str(q)+");"
                 haspoint = magma_free(instring)
                 #print(haspoint)
@@ -912,7 +916,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     - ``f`` -- a polynomial over `\QQ` of the form `a_6*x^6 + a_4*x^4 + a_2*x^2 + a_0`,
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when
-      `F` is an imaginary quadratic field the two elliptic curves should have rank `1` over `F` [KF2024]
+    - ``F`` -- default is `\QQ` but in the case when the curve is `X_0(37)`, it can be `\QQ(i)` [JB2023]  
     - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
     - ``Omega`` -- list of the values in `Omega` from [BP22],
@@ -927,7 +931,6 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       items are returned up to the automorphisms `(x,y) \mapsto (\pm x,\pm y)`
     - ``omega_info`` -- True/False (default False): if True, the output is partitioned
       according to elements in `Omega`.
-    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2024]
 
     OUTPUT: If `omega_info` is False: A tuple consisting of:
     - A sorted list of rational points on `H`.
@@ -1160,10 +1163,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m1*f1 == E1K(0,1,0):
             Logf1 = 0
             try:
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2) ### KF2025
             except NameError:
                 H1K = HyperellipticCurve(E1K.hyperelliptic_polynomials()[0])
-                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2)
+                int_w1_b_f1 = H1K.coleman_integrals_on_basis(H1K(-f1), H1K(f1))[1]*(1/2) ### KF2025
             if f1[1] != 0:
                 f1alg_x = QQ(f1[0])
                 try:
@@ -1190,10 +1193,10 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
         elif m2*f2 == E2K(0,1,0):
             Logf2 = 0
             try:
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(-f2), H2K(f2))[1]*(1/2)
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(-f2), H2K(f2))[1]*(1/2) ### KF2025
             except NameError:
                 H2K = HyperellipticCurve(E2K.hyperelliptic_polynomials()[0])
-                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(f2), H2K(f2))[1]*(1/2)
+                int_w1_b_f2 = H2K.coleman_integrals_on_basis(H2K(f2), H2K(f2))[1]*(1/2) ### KF2025
             if f2[1] != 0:
                 f2alg_x = QQ(f2[0])
                 try:
@@ -1368,11 +1371,11 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
                 other_points_complete.extend([P,HK(P[0],-P[1], P[2]), HK(-P[0],P[1],P[2]),HK(-P[0],-P[1],P[2])])
             rational_points[l] = list(Set(rational_points_complete))
             other_points[l] = list(Set(other_points_complete))
-            ### added!!
+            ### added check for low-degree relations, KF2025. Change the second input to algdep to change degree.
             for P in other_points[l]:
                 try:
-                    F = algdep(P[0],4)
-                    G = algdep(P[1],4)
+                    F = algdep(P[0],2)
+                    G = algdep(P[1],2)
                     Kb.<b> = NumberField(F)
                     Lc.<c> = NumberField(G)
                     if Kb.is_isomorphic(Lc) or (smallpol(F) and smallpol(G)):
