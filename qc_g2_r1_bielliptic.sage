@@ -784,7 +784,7 @@ def coefficients_mod_pN_v2(f, points, im_divisors, base_pt, p, N, k=5):
     return coeffs
 
 
-def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True):
+def Omega_set(f, p, n,  Es = None, Emins = None, potential_good_primes = True):
     r"""
     Compute a finite set containing Omega
     INPUT:
