@@ -75,7 +75,7 @@ def embeddings(K,p,prec):
     The embedding(s) `$K=\Q(\sqrt(D)) \into \Q_p$`.
 
     Added to the forked repo, JB2023.
-    Modified to use K.ideal(p) instead of K.maximal_order, KF2024.
+    Modified to use K.ideal(p) instead of K.maximal_order, KF2025.
     """
     Q = Qp(p,prec)
     I = K.ideal(p)
@@ -819,12 +819,12 @@ def Omega_set(f, p, n, L,  Es = None, Emins = None, potential_good_primes = True
         E1min = Emins[0]
         E2min = Emins[1]
     K = Qp(p,n)
-    D = L.discriminant() #KF2024
+    D = L.discriminant() #KF2025
     bad_primes_1, W1 = local_heights_at_bad_primes_new(E1min, E1, K)
     bad_primes_2, W2 = local_heights_at_bad_primes_new(E2min, E2, K)
     bad_primes_3 = f7(ZZ(a0).prime_factors() + ZZ(a6).prime_factors())
     bad_primes_4 = prime_divisors(D) #KF2025
-    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3 + bad_primes_4) #KF2024
+    bad_primes = f7(bad_primes_1 + bad_primes_2 + bad_primes_3 + bad_primes_4) #KF2025
     Wqprimelist = []
     for q in bad_primes:
         if potential_good_primes == True:
@@ -905,7 +905,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     - ``f`` -- a polynomial over `\QQ` of the form `a_6*x^6 + a_4*x^4 + a_2*x^2 + a_0`,
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when
-      `F` is an imaginary quadratic field the two elliptic curves should have rank `1` over `F` [KF2024]
+      `F` is an imaginary quadratic field the two elliptic curves should have rank `1` over `F` [KF2025]
     - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
     - ``Omega`` -- list of the values in `Omega` from [BP22],
@@ -920,7 +920,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       items are returned up to the automorphisms `(x,y) \mapsto (\pm x,\pm y)`
     - ``omega_info`` -- True/False (default False): if True, the output is partitioned
       according to elements in `Omega`.
-    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2024]
+    - ``F`` -- default is `\QQ` but can be an imaginary quadratic field [KF2025]
 
     OUTPUT: If `omega_info` is False: A tuple consisting of:
     - A sorted list of rational points on `H`.
