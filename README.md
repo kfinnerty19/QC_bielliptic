@@ -17,5 +17,3 @@ This code is based on an earlier version by F. Bianchi, available at: https://gi
 The version of code by J. S. Balakrishnan is available at: https://github.com/jbalakrishnan/QC_bielliptic/tree/main
 
 The other files provide a list of potential equations as well as files to run the analysis over these equations. In the rank 1 case, suitable number fields are computed such that the Mordell--Weil rank of the Jacobian of the curve increases to 2.
-
-NB: For the prime 3, the code relies on the following repository: https://github.com/jbalakrishnan/AWS
