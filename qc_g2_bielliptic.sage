@@ -917,7 +917,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
       `a_i \in \ZZ`. The two elliptic curves `E_1: y^2 = x^3 + a_4*x^2 + a_2*a_6*x + a_0*a_6^2`
       and `E_2: y^2 = x^3 + a_2*x^2 + a0*a4*x + a_0^2*a_6` should have rank `1` over `\QQ`, or in the case when
     - ``F`` -- default is `\QQ` but in the case when the curve is `X_0(37)`, it can be `\QQ(i)` [JB2023]  
-    - ``p`` -- an odd prime such that `E_1` and `E_2` have good ordinary reduction at`p`.
+    - ``p`` -- an odd prime not equal to 3 such that `E_1` and `E_2` have good ordinary reduction at`p`.
     - ``n`` -- working `p`-adic precision.
     - ``Omega`` -- list of the values in `Omega` from [BP22],
       but with respect to minimal models for the elliptic curves (i.e. they equal the ones of [BP22] only up to a translation).
@@ -994,6 +994,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     E2 = EllipticCurve([0, a2, 0, a0*a4, a0^2*a6])
     assert E1.has_good_reduction(p) and E2.has_good_reduction(p), "p needs to be a prime of good reduction for the given model."
     assert E1.is_ordinary(p) and E2.is_ordinary(p), "Currently implemented only for ordinary primes (precision analysis is easier)."
+    assert p != 3, "p cannot be 3"
     K = Qp(p, n)
 
     #Step 1: computing minimimal models of E1, E2 and isomorphisms to and from them,
@@ -1015,16 +1016,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
     S = F
     E1mS = E1m.change_ring(S)
     E2mS = E2m.change_ring(S)
-    try:
-        h1 = E1m.padic_height(p, n)
-    except NotImplementedError:
-        print("For the prime 3 the code does not work, unless you use this repository: https://github.com/jbalakrishnan/AWS")
-        return "Error", "Error"
-    try:
-        h2 = E2m.padic_height(p, n)
-    except NotImplementedError:
-        print("For the prime 3 the code does not work, unless you use this repository: https://github.com/jbalakrishnan/AWS")
-        return "Error", "Error"
+    h1 = E1m.padic_height(p, n)
+    h2 = E2m.padic_height(p, n)
     P1m = E1mS.gens()[0]
     P2m = E2mS.gens()[0]
     E1S = E1.change_ring(S)

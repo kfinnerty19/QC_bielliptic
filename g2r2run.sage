@@ -10,7 +10,7 @@ for f in equations:
         try:
             print("used p = %s"%p)    
             sys.stdout.flush()
-            rat_pts,other_pts = quadratic_chabauty_bielliptic_exceptional(f,p,25)
+            rat_pts,other_pts = quadratic_chabauty_bielliptic(f,p,25)
         except(NotImplementedError,ArithmeticError,AssertionError):
             print("NotImplemented or bad")
             pass
