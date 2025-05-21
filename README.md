@@ -39,7 +39,3 @@ Description of files:
 - qc_g2_r1_bielliptic.sage: modifies the rank 2 version of the file to allow for one of the corresponding elliptic curves to have rank 0 provided that a suitable number field and a prime of good reduction is provided.
 
 - rank1eqs.sage: a list of equations that are rank 1 over the rationals.
-
-- rank2eqs.sage: a list of equations that are rank 2 over the rationals.
-
-- Supplementary_Tables.pdf: A set of tables to accompany [Fin25].
