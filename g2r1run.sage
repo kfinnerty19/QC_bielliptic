@@ -1,5 +1,5 @@
 load("rank1eqs.sage")
-load("qcbiell_rk1.sage")
+load("qc_g2_r1_bielliptic.sage")
 
 import sys
 
@@ -23,14 +23,15 @@ from contextlib import redirect_stdout
 from io import StringIO
 import multiprocessing
 
-def silent_wrapper(E):
-    def targetfunc(queue):
-        with redirect_stdout(StringIO()): 
-            try:
-                queue.put(E.rank()) 
-            except Exception as e:
-                queue.put(-100) #Dummy number to ensure failure
+def targetfunc(queue):
+    with redirect_stdout(StringIO()): 
+        try:
+            queue.put(E.rank()) 
+        except Exception as e:
+            queue.put(-100) #Dummy number to ensure failure
     
+
+def silent_wrapper(E):
     queue = multiprocessing.Queue()
     process = multiprocessing.Process(target=targetfunc, args=(queue,))
     process.start()
