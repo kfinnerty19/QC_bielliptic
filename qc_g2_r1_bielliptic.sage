@@ -1282,8 +1282,8 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
             rhoomega = rhoomega_new
             NNk = min([rhoomega[i].precision_absolute() for i in range(rhoomega.degree())])
             if NNk < N-k:
-                print(D.index(P))
-                print("hmm, interesting loss of precision", N, k)
+                #print(D.index(P))
+                #print("hmm, interesting loss of precision", N, k)
                 N = NNk + k
             rhoomega_val = rhoomega.valuation()
 
@@ -1363,6 +1363,7 @@ def quadratic_chabauty_bielliptic(f, p, n, Omega=[], potential_good_primes = Tru
                     Lc.<c> = NumberField(G)
                     if Kb.is_isomorphic(Lc) or (smallpol(F) and smallpol(G)):
                         print(F,G)
+                        print("Found something?")
                 except:
                     pass
         else:  

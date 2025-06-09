@@ -23,7 +23,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 import multiprocessing
 
-def targetfunc(queue):
+def targetfunc(E,queue):
     with redirect_stdout(StringIO()): 
         try:
             queue.put(E.rank()) 
@@ -33,7 +33,7 @@ def targetfunc(queue):
 
 def silent_wrapper(E):
     queue = multiprocessing.Queue()
-    process = multiprocessing.Process(target=targetfunc, args=(queue,))
+    process = multiprocessing.Process(target=targetfunc, args=(E,queue))
     process.start()
     process.join(10)
     
@@ -73,10 +73,10 @@ for f in equations:
 				S.<a>=NumberField(x^2+D)
 				print("[%s,%s]"%(D,p))
 				try:
-				    rat_pts,other_pts = quadratic_chabauty_bielliptic_exceptional(f,p,25,F=S)
+				    rat_pts,other_pts = quadratic_chabauty_bielliptic(f,p,25,F=S)
 				    pairs.append([[D,p]])
 				except Exception as e:
-				    print(e)
+				    #print(e)
 				    pass
 		if len(pairs)>=5:
 		    break
