@@ -35,5 +35,7 @@ In the rank 1 case, we consider the height contributions of primes that divide t
 4. K. Finnerty. "Quadratic Chabauty Experiments on Genus 2 Bielliptic Modular Curves in the LMFDB." 2025, to appear.
 
 If you have questions or suggestions or if you find bugs, please contact me.
+
 Kate Finnerty, Boston University
+
 ksfinn@bu.edu
